@@ -3,7 +3,9 @@ package com.example.controller;
 import com.example.model.User;
 import com.example.service.UserService;
 import com.example.util.MD5Util;
+import com.example.util.UUIDUtil;
 import com.example.util.ValidateCode;
+import com.example.vo.UserVo;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -42,7 +45,7 @@ public class LoginController {
 
     @PostMapping("/login")
     public String register(@ModelAttribute(value="user") @Valid User user ,BindingResult bindingResult,
-                           HttpSession session,Model model,String code){
+                           HttpSession session,Model model,String code,HttpServletResponse response){
 
         log.info("username="+user.getUsername()+";password="+user.getPassword());
         if(bindingResult.hasErrors()){
@@ -53,13 +56,20 @@ public class LoginController {
             model.addAttribute("message", "验证码不匹配");
             return "login";
         }
-        User userDb=userService.findByUsername(user.getUsername());
-        if(userDb!=null){
-            String inputPwd=MD5Util.inputToDb(user.getPassword(),userDb.getDbflag());
+        UserVo userVo=userService.findByUsername(user.getUsername());
+        if(userVo!=null){
+            String inputPwd=MD5Util.inputToDb(user.getPassword(),userVo.getDbflag());
             log.info("----inputPwd="+inputPwd);
-            if(userDb.getPassword().equals(inputPwd)){
-                session.setAttribute("user",userDb);
-                return "home";
+            if(userVo.getPassword().equals(inputPwd)){
+                //session.setAttribute("user",userVo);
+                //将user信息存入redis
+                String token =UUIDUtil.getUUID();
+                userService.saveUserToRedisByToken(userVo,token);
+                Cookie cookie = new Cookie("token",token);
+                cookie.setMaxAge(3600);
+                cookie.setPath("/");
+                response.addCookie(cookie);
+                return "redirect:/home";
             }else{
                 return "login";
             }

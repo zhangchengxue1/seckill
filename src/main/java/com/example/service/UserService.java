@@ -1,6 +1,7 @@
 package com.example.service;
 
 import com.example.model.User;
+import com.example.vo.UserVo;
 
 import javax.validation.Valid;
 
@@ -9,7 +10,10 @@ import javax.validation.Valid;
  */
 public interface UserService {
     public User findByUsernameAndPassword(String username, String password);
-    public User findByUsername(String username);
+    public UserVo findByUsername(String username);
     public void regist(@Valid User user);
 
+    void saveUserToRedisByToken(UserVo userVo, String token);
+
+    Object getUserFromRedisByToken(String s);
 }

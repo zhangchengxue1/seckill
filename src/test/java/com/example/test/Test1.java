@@ -18,12 +18,12 @@ public class Test1 {
     @Autowired
     public UserService userService;
 
-    @Test
-    public User findUser(){
-        User user=userService.findByUsername("11");
-        System.out.println(user.getUsername()+"  "+user.getPassword());
-        return user;
-    }
+//    @Test
+//    public User findUser(){
+//        User user=userService.findByUsername("11");
+//        System.out.println(user.getUsername()+"  "+user.getPassword());
+//        return user;
+//    }
 
    /* public static void main(String[] args) {
         User user=userService.findByUsername("11");

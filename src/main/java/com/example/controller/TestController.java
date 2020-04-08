@@ -1,7 +1,7 @@
 package com.example.controller;
 
-import com.example.model.User;
 import com.example.service.UserService;
+import com.example.vo.UserVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,7 +17,7 @@ public class TestController {
     UserService userService;
 
     @RequestMapping("/findUser")
-    public User findUser(String userName){
+    public UserVo findUser(String userName){
         return userService.findByUsername("11");
     }
 
