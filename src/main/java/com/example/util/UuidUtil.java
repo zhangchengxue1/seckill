@@ -2,9 +2,14 @@ package com.example.util;
 
 import java.util.UUID;
 
-public class UUIDUtil {
-
-	public static String getUUID(){
-		return UUID.randomUUID().toString().replaceAll("-", "");
-	}
+/**
+ * @Title: com.example.util
+ * @Description:
+ * @author: zhchx
+ * @date 2020/4/28 14:24
+ */
+public class UuidUtil {
+    public static String getUUID(){
+        return UUID.randomUUID().toString().replaceAll("-", "");
+    }
 }
