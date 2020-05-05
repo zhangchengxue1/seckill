@@ -6,7 +6,7 @@ import com.example.base.result.ResultCode;
 import com.example.model.User;
 import com.example.service.UserService;
 import com.example.util.MD5Util;
-import com.example.util.UUIDUtil;
+import com.example.util.UuidUtil;
 import com.example.vo.UserVo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,7 +42,7 @@ public class LoginApiController extends BaseApiController {
         UserVo dbUser = userService.findByUsername(user.getUsername());
         if(dbUser != null){
             if(dbUser.getPassword().equals(MD5Util.inputToDb(user.getPassword(), dbUser.getDbflag()))){
-                String token = UUIDUtil.getUUID();
+                String token = UuidUtil.getUUID();
                 userService.saveUserToRedisByToken(dbUser, token);
 
                 Cookie cookie = new Cookie("token", token);

@@ -3,7 +3,7 @@ package com.example.controller;
 import com.example.model.User;
 import com.example.service.UserService;
 import com.example.util.MD5Util;
-import com.example.util.UUIDUtil;
+import com.example.util.UuidUtil;
 import com.example.util.ValidateCode;
 import com.example.vo.UserVo;
 import org.apache.commons.lang3.StringUtils;
@@ -63,7 +63,7 @@ public class LoginController {
             if(userVo.getPassword().equals(inputPwd)){
                 //session.setAttribute("user",userVo);
                 //将user信息存入redis
-                String token =UUIDUtil.getUUID();
+                String token = UuidUtil.getUUID();
                 userService.saveUserToRedisByToken(userVo,token);
                 Cookie cookie = new Cookie("token",token);
                 cookie.setMaxAge(3600);
