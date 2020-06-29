@@ -15,4 +15,14 @@ public class CourseRedis extends IRedisDao<Course> {
     protected String getRedisKey() {
         return REDIS_KEY;
     }
+
+    /**
+     * 递减操作
+     * @param key
+     * @param by
+     * @return
+     */
+    public double decr(String key, double by){
+        return redisTemplate.opsForValue().increment(key, -by);
+    }
 }
